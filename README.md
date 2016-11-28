@@ -10,6 +10,7 @@ Open Source Web Task Management Software
 - Obs: mod_rewrite must be uncommented at Apaches's httpd.conf to load URL like this: http://localhost/taskero/controller/action/params
 
 ### Main Files
+-
 - index.php: starts the Application;
 - configuration.php: The file you need to alter for your preferences;
 - loader.php: This file loads the entire Application, the Global Functions and the main class: FreePHPMVC;
