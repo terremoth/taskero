@@ -3,14 +3,8 @@
 /**
  * MainController - All Controllers must extends this class
  */
-class MainController extends UserLogin {
-
-    /**
-     * DataBase connection using PDO
-     * @access public
-     */
-    public $db;
-
+class MainController extends UserLogin 
+{
     /**
      * Classe phpass 
      * @see http://www.openwall.com/phpass/
@@ -19,7 +13,7 @@ class MainController extends UserLogin {
     public $phpass;
 
     /**
-     * Page Title
+     * Page Title // MANDAR PARA 
      * @access public
      */
     public $title;
@@ -41,40 +35,68 @@ class MainController extends UserLogin {
      * @access public
      */
     public $params = array();
+    
+    /**
+     * Model
+     * @var object Model
+     */
+    public $model;
+    
+    /**
+     * View
+     * @var object View
+     */
+    public $view;
+    
+    /**
+     * Instances $_GET and $_POST inside new objects
+     * @var object Object with $_GET and $_POST
+     */
+    public $requestGet;
+    
+    /**
+     * Instances $_GET and $_POST inside new objects
+     * @var object Object with $_GET and $_POST
+     */
+    public $requestPost;
 
     /**
      * Configures all the class to crates Controller enviroment
      * @access public
      */
-    public function __construct($params = array()) {
-
-        // Instances DataBase Object
-        $this->db = new Database();
-
+    public function __construct($params = array()) 
+    {
+        // Creates $_GET and $_POST
+        if(isset($_GET)  && !empty($_GET)) {$this->requestGet  = $_GET;}
+        if(isset($_POST) && !empty($_POST)){$this->requestPost = $_POST;}
+        
         // Phpass Class
         $this->phpass = new PasswordHash(8, false);
 
         // Environment params
         $this->params = $params;
 
-        // Verify login
+        /**
+         * @todo Verify login : Disabled due to some issues in the UserLogin class
+         */
         //$this->checkUserLogin();
+        
     }
 
     /**
      * Load the model itself
      * @access public
      */
-    public function loadModel($sModelName = false) {
-
+    public function loadModel($sModelName = false) 
+    {
+        
         // loadModel will return false if can't find model
-        if (!$sModelName){
+        if ($sModelName === false){
             return false;
         }
 
         // including file
-        $sModelPath = BASE_PATH . '/model/' . $sModelName . '.php';
-
+        $sModelPath = BASE_PATH . '/model/Model' . $sModelName . '.php';
         // Verifies if file exists
         if (file_exists($sModelPath)) {
 
@@ -82,22 +104,21 @@ class MainController extends UserLogin {
             require_once $sModelPath;
 
             // Split (if it can) the path to get model's name
-            $aModelName = explode('/', $sModelName);
+            $sModelName = 'Model'.$sModelName;
 
-            // Get only final name (the real one)
-            $sModelName = end($aModelName);
-            
             // Verifies if the class exists
             if (class_exists($sModelName)) {
+                
                 // Return the object with the class
-                return new $sModelName($this->db, $this);
+                return new $sModelName();
             }
         } else {
             return false;
         }
     }
     
-    public function loadView($sViewName = false) {
+    public function loadView($sViewName = false, $aData = array()) 
+    {
 
         // loadView will return false if can't find view
         if (!$sViewName){
@@ -121,8 +142,12 @@ class MainController extends UserLogin {
             
             // Verifies if the class exists
             if (class_exists($sCompleteViewClass)) {
+                
                 // Return the object with the class
-                return new $sCompleteViewClass();
+                $oView = new $sCompleteViewClass($aData);
+                
+                return $oView;
+                
             } else {
                 return false;
             }

@@ -1,11 +1,15 @@
 <?php
 
-class MainView {
+class MainView 
+{
     
     private $pageTitle = '';
-    
-    function __construct() {
+    protected $data;
         
+    function __construct($aData = false) {
+        if(!$aData){
+            $this->data = $aData;
+        }
     }
 
     /**
@@ -29,7 +33,7 @@ class MainView {
      * @param string $sCompleteFilename The image filename including its extension to load
      */
     protected function loadImage($sCompleteFilename, $sWidth = null, $sHeight = null, $sClass = null, $sStyle = null){
-        echoln('<img src="'.HOME_URI . '/asset/img/'.$sCompleteFilename.'" width="'.$sWidth.'" height="'.$sHeight.'" style="'.$sStyle.'" class="'.$sClass.'">');
+        echoln('<img src="'.HOME_URI . '/asset/images/'.$sCompleteFilename.'" width="'.$sWidth.'" height="'.$sHeight.'" style="'.$sStyle.'" class="'.$sClass.'">');
     }
     
     
@@ -40,7 +44,7 @@ class MainView {
     protected function loadIFrame($sFilename){}
     
     /**
-     * Loads < ul/ol > and <li> tags with its contents inside
+     * Loads < ul/ol > and < li > tags with its contents inside
      * @param array $aContents
      * @param bool $bOrderedList
      */

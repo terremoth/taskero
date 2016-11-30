@@ -65,7 +65,6 @@ class Database
 			
 			// Verify if needs debug
 			if ( $this->debug === true ) {
-			
 				// Configures PDO ERROR MODE
 				$this->pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 			}
@@ -98,13 +97,14 @@ class Database
             $sStatement .= 'WHERE '.$sWhere;
         }
         
-		$query = $this->pdo->prepare();
-		$checkExecution = $query->execute($sStatement);
-		
+		$query = $this->pdo->prepare($sStatement);
+		$result = $query->execute();
+        
+        
 		// Verifies if the query was right made
-		if ($checkExecution) {
-			// Retorns query
-			return $query;
+		if ($result) {
+			// Returns query
+			return $query->fetchAll();
             
 		} else {
             
@@ -130,7 +130,7 @@ class Database
 		
 		// Verifies if the query was right made
 		if ($checkExecution) {
-			// Retorns query
+			// Returns query
 			return $query;
             
 		} else {
@@ -158,25 +158,25 @@ class Database
 		// Configura o valor inicial do modelo
 		$sPlaceHolders = '(';
 		
-		// Configura o array de valores
-		$values = array();
+		// Start the array values
+		$aValues = array();
 		
 		// O $j will assegura que colunas serão configuradas apenas uma vez
 		$j = 1;
 		
-		// Obtém os argumentos enviados
-		$data = func_get_args();
+		// Get all extra function arguments
+		$aArgs = func_get_args();
 		
 		// É preciso enviar pelo menos um array de chaves e valores
-		if (!isset($data[1]) || !is_array($data[1])) {
+		if (!isset($aArgs[1]) || !is_array($aArgs[1])) {
 			return false;
 		}
 		
 		// Iterates all function args
-		for ( $i = 1; $i < count( $data ); $i++ ) {
+		for ( $i = 1; $i < count( $aArgs ); $i++ ) {
 		
             // Get the keys as columns and their respective values
-			foreach ($data[$i] as $col => $val) {
+			foreach ($aArgs[$i] as $col => $val) {
 			
 				// The first iteration starts the columns
 				if ($i === 1) {
@@ -192,7 +192,7 @@ class Database
 				$sPlaceHolders .= '?, ';
 				
 				// Creates the list of columns values
-				$values[] = $val;
+				$aValues[] = $val;
 				
 				$j = $i;
 			}
@@ -208,7 +208,7 @@ class Database
 		$statement = "INSERT INTO `$table` ($aCols) VALUES $sPlaceHolders) ";
 		
 		// insert values
-		$insert = $this->query($statement, $values);
+		$insert = $this->query($statement, $aValues);
 		
 		// Verifies if insert was succeed
 		if ($insert) {
@@ -221,7 +221,7 @@ class Database
 				$this->lastId = $this->pdo->lastInsertId();
 			}
 			
-			// Retorns insert query response
+			// Returns insert query response
 			return $insert;
 		}
 	}
@@ -297,16 +297,16 @@ class Database
 		$sStatement = " DELETE FROM `$sTable` ";
  
 		// Configures as WHERE field = value
-		$sWhere = " WHERE `$sWhereField` = ? ";
+		$sWhere = " WHERE `$sWhereField` = '$sWhereFieldValue' ";
 		
 		// Concats all
 		$sStatement .= $sWhere;
 		
 		// Value to search and delete
-		$aValue = array($sWhereFieldValue);
+//		$aValue = array($sWhereFieldValue);
  
 		// Apaga
-		$bDelete = $this->query( $sStatement, $aValue );
+		$bDelete = $this->query( $sStatement );
 		
 		// Verifica se a consulta está OK
 		if ($bDelete) {

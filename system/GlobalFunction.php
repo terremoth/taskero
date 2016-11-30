@@ -71,3 +71,14 @@ function loadFavIcon($sCompleteFilename){
    echoln('<link rel="shortcut icon" type="image/'.$sFileInfo['extension'].'" href="' . BASE_PATH . '/asset/img/'. $sCompleteFilename . '">');
    echoln('<link rel="icon" type="image/'.$sFileInfo['extension'].'" href="' . BASE_PATH . '/asset/img/'. $sCompleteFilename . '">');
 }
+
+function sanitizeRequest($sSenderRequest, $bStriptTags = false)
+{
+    // Removes < > (tags structures)
+    $sSenderRequest = strip_tags($sSenderRequest) ? $bStriptTags : $sSenderRequest;
+    
+    // Converts special chars to html entities
+    $sDecodedString = htmlspecialchars($sSenderRequest, ENT_QUOTES, strtoupper(APP_CHARSET));
+    
+    return $sDecodedString;
+}

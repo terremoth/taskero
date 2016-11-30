@@ -27,7 +27,7 @@ class MainModel
 	 * PDO database object
 	 * @access public
 	 */
-	public $db;
+	protected $db;
  
 	/**
 	 * The controller that generates this model
@@ -46,7 +46,16 @@ class MainModel
 	 * @access public
 	 */
 	public $userData;
-	
+    
+    /**
+     * Creates connection with Database
+     */
+    public function initDB() 
+    {
+        // Instances DataBase Object
+        $this->db = new Database();
+    }
+    
 	/**
 	 * Get date and Invert date value - From: d-m-Y H:i:s to Y-m-d H:i:s or vice-verse.
 	 * @access public
@@ -78,12 +87,12 @@ class MainModel
 			}
 			
 			// Minutes
-			if ( arrayKey( $sDate, 4 ) ) {
+			if (arrayKey($sDate, 4)) {
 				$sNewDate .= ':' . arrayKey($sDate, 4);
 			}
 			
 			// Seconds
-			if ( arrayKey( $sDate, 5 ) ) {
+			if (arrayKey($sDate, 5)) {
 				$sNewDate .= ':' . arrayKey($sDate, 5);
 			}
 		}

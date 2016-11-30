@@ -6,7 +6,7 @@ class ControllerCreateTask extends MainController {
     {
         
         $this->title = 'Create Task List';
-		$this->loadModel('TaskList');
+        $this->loadModel('TaskList');
         $this->loadView('CreateTaskList');
         
 	}

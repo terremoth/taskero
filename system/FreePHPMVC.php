@@ -53,7 +53,7 @@ class FreePHPMVC {
             
         //Verify if controller exists. In false case, loads the default controller
         if (!$this->controller) {
-            $this->startControllerDefault();
+            $this->loadDefaultController();
         } else {
             $this->tryDefinedController();
         }
@@ -67,7 +67,7 @@ class FreePHPMVC {
      */
     public function getUrlData() {
 
-        // Verifica se o parâmetro path foi enviado
+        // Verifies if path was send
         if (isset($_GET['path'])) {
 
             // Get the value of $_GET['path']
@@ -77,25 +77,28 @@ class FreePHPMVC {
             $path = rtrim($path, '/');
             $path = filter_var($path, FILTER_SANITIZE_URL);
 
-            // Cria um array de parâmetros
+            // Create array with path properties
             $path = explode('/', $path);
-            // Configura as propriedades 
             $this->controller  = 'Controller';
+            // Controller Name
             $this->controller .= arrayKey($path, 0);
+            // Action/Method passed to the controller
             $this->action = arrayKey($path, 1);
-
+            
             // Configura os parâmetros
             if (arrayKey($path, 2)) {
                 unset($path[0]);
                 unset($path[1]);
 
-                // Os parâmetros sempre virão após a ação
+                // All the params will be sent here reorganizing the arrays positions
                 $this->params = array_values($path);
             }
+        } else {
+            return false;
         }
     }
 
-    public function startControllerDefault() {
+    public function loadDefaultController() {
         // Add default controller
         require_once BASE_PATH . '/controller/Controller'.APP_HOME.'.php';
         
@@ -104,14 +107,13 @@ class FreePHPMVC {
         
         $this->controller = new $oControllerName();
 
-        // execute index method
+        // executes index method
         $this->controller->index();
     }
 
     public function tryDefinedController() {
-
         // If the controller file not exists, go to 404 defined page
-        $sControllerFile = BASE_PATH . '/controller/Controller' . $this->controller . '.php';
+        $sControllerFile = BASE_PATH . '/controller/' . $this->controller . '.php';
 
         if (file_exists($sControllerFile)) {
             // Include controller name
@@ -122,10 +124,10 @@ class FreePHPMVC {
             $this->controller = preg_replace('/[^a-zA-Z]/i', '', $this->controller);
 
             // If the class name/file still not existing, go to 404 page 
-            if (class_exists($this->getController())) {
+            if (class_exists($this->controller)) {
                 // now it creates the controller class and send params
-                $oController = $this->getController($this->getParams());
-                $this->setController($oController); 
+                $oController = new $this->controller;
+                $this->controller = new $oController();
                 $this->tryDefinedMethod();
                 
                 /* All occurrences below send to the 404 page if the requirements were not attended */
@@ -143,6 +145,7 @@ class FreePHPMVC {
      */
     public function tryDefinedMethod() {
         // if method exists, call it and send the params
+        
         if (method_exists($this->controller, $this->action)) {
             $this->controller->{$this->action}($this->params);
         } else {
@@ -163,20 +166,12 @@ class FreePHPMVC {
         }
     }
 
-    public function getController($aParams = null) {
-        return $this->controller($aParams);
-    }
-
     public function getAction() {
         return $this->action;
     }
 
     public function getParams() {
         return $this->params;
-    }
-
-    public function setController($controller) {
-        $this->controller = $controller;
     }
 
     public function setAction($action) {

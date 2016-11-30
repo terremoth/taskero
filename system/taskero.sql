@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 28, 2016 at 08:01 PM
+-- Generation Time: Nov 30, 2016 at 02:01 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -23,39 +23,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `task`
---
-
-CREATE TABLE `task` (
-  `task_id` int(10) NOT NULL COMMENT 'Task Identification',
-  `task_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Description about what the user will do, the task itself',
-  `fk_todo_list_id` int(8) DEFAULT NULL COMMENT 'FK referencing todo_list table',
-  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The task creatio date, for analysis purposes only',
-  `task_complete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Task completation (1/true if the task has been completed, 0/false if hasn''t)'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `todo_list`
 --
 
 CREATE TABLE `todo_list` (
   `todo_list_id` int(8) NOT NULL,
   `todo_list_creation_data` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `todo_list_name` varchar(255) DEFAULT NULL
+  `todo_list_name` varchar(255) DEFAULT NULL,
+  `todo_list_final_date` date NOT NULL,
+  `todo_list_description` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `todo_list`
+--
+
+INSERT INTO `todo_list` (`todo_list_id`, `todo_list_creation_data`, `todo_list_name`, `todo_list_final_date`, `todo_list_description`) VALUES
+(1, '2016-11-30 08:02:46', 'Dar banho no cachorro', '2016-12-02', ''),
+(2, '2016-11-30 08:02:46', 'Ir na casa da sogra', '2016-12-15', ''),
+(3, '2016-11-30 11:08:18', 'Ir para a festa 2', '2016-12-30', 'Aniversário do pedro'),
+(4, '2016-11-30 11:10:49', 'aaaaaaaaaaaaaaaaa', '2016-11-09', 'aaaaaaaaaaaaaaaaa');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `task`
---
-ALTER TABLE `task`
-  ADD PRIMARY KEY (`task_id`),
-  ADD KEY `fk_todo_list` (`fk_todo_list_id`);
 
 --
 -- Indexes for table `todo_list`
@@ -68,15 +59,10 @@ ALTER TABLE `todo_list`
 --
 
 --
--- AUTO_INCREMENT for table `task`
---
-ALTER TABLE `task`
-  MODIFY `task_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Task Identification';
---
 -- AUTO_INCREMENT for table `todo_list`
 --
 ALTER TABLE `todo_list`
-  MODIFY `todo_list_id` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `todo_list_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

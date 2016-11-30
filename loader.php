@@ -25,5 +25,5 @@ if (!defined('DEBUG') || DEBUG === false) {
 // Load Global FreeMVCPHP Functions
 require_once '/system/GlobalFunction.php';
 
-// Carrega a aplicação
+// Loads Entire Application
 $oFreePHPMVC = new FreePHPMVC();
