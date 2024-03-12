@@ -3,7 +3,7 @@
 /**
  * PHP's Default function to automatically load classes from a directory
  */
-function __autoload($sClassName) {
+function taskero_autoloader($sClassName) {
     $sFile = BASE_PATH . '/system/' . $sClassName.'.php';
     
     if (!file_exists($sFile)) {
@@ -14,6 +14,8 @@ function __autoload($sClassName) {
         require_once $sFile;
     }
 }
+
+spl_autoload_register('taskero_autoloader');
 
 /**
  * Verifies if array key exists and then returns the value that corresponds that key

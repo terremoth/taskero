@@ -13,7 +13,7 @@ class MainController extends UserLogin
     public $phpass;
 
     /**
-     * Page Title // MANDAR PARA 
+     * Page Title
      * @access public
      */
     public $title;

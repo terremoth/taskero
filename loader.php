@@ -23,7 +23,7 @@ if (!defined('DEBUG') || DEBUG === false) {
 }
 
 // Load Global FreeMVCPHP Functions
-require_once '/system/GlobalFunction.php';
+require_once 'system/GlobalFunction.php';
 
 // Loads Entire Application
 $oFreePHPMVC = new FreePHPMVC();
