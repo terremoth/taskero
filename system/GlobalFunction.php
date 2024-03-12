@@ -3,7 +3,7 @@
 /**
  * PHP's Default function to automatically load classes from a directory
  */
-function taskero_autoloader($sClassName) {
+function taskeroAutoloader($sClassName) {
     $sFile = BASE_PATH . '/system/' . $sClassName.'.php';
     
     if (!file_exists($sFile)) {
@@ -15,7 +15,7 @@ function taskero_autoloader($sClassName) {
     }
 }
 
-spl_autoload_register('taskero_autoloader');
+spl_autoload_register('taskeroAutoloader');
 
 /**
  * Verifies if array key exists and then returns the value that corresponds that key
@@ -35,7 +35,7 @@ function arrayKey($aArray, $iKey) {
 
 /**
  * Echoes a string adding a new line
- * @param type $sString string that wants to echoes
+ * @param string $sString string that wants to echoes
  */
 function echoln($sString) {
     echo $sString . PHP_EOL;

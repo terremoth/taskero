@@ -33,7 +33,7 @@ class MainView
      * @param string $sCompleteFilename The image filename including its extension to load
      */
     protected function loadImage($sCompleteFilename, $sWidth = null, $sHeight = null, $sClass = null, $sStyle = null){
-        echoln('<img src="'.HOME_URI . '/asset/images/'.$sCompleteFilename.'" width="'.$sWidth.'" height="'.$sHeight.'" style="'.$sStyle.'" class="'.$sClass.'">');
+        echoln('<img src="'.HOME_URI . '/asset/img/'.$sCompleteFilename.'" width="'.$sWidth.'" height="'.$sHeight.'" style="'.$sStyle.'" class="'.$sClass.'">');
     }
     
     
