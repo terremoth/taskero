@@ -155,7 +155,7 @@ class ViewTaskList extends MainView {
         <?php
                 
             $aScripts = array(
-                'jquery-3.1.1.min',
+                'jquery-3.7.1.min',
                 'bootstrap.min',
                 'bootstrap-datepicker.min',
                 'bootstrap-datepicker.pt-BR.min',
